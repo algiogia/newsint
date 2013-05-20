@@ -54,7 +54,7 @@ public class ConsoleTest {
 
 		// move robot
 		exception.expect(CoordinatesOutOfBoundsException.class);
-		String result = console.execute("RMMLMLMM");
+		String result = console.execute("LMMRMRMM");
 
 		assertEquals("0 2 E", result);
 	}

@@ -1,8 +1,5 @@
 package com.ivano.rover.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 
 import com.ivano.rover.Direction;
@@ -21,44 +18,32 @@ import com.ivano.rover.exception.RoverException;
 public class DefaultConsole implements Console {
 
 	private final String RESET_COMMAND = "#reset";
-	private static final String RESETTING_CONSOLE_MESSAGE = "resetting console";
 
 	private Plateau plateau;
 	private ConsoleStatus status = ConsoleStatus.NEW;
 	private Robot robot;
-	private List<String> history = new ArrayList<String>();
 
 	@Override
 	public String execute(String command) throws RoverException {
-
-		history.add(command);
 
 		if (RESET_COMMAND.equals(command)) {
 			status = ConsoleStatus.NEW;
 			plateau = null;
 			robot = null;
-			history.add(RESETTING_CONSOLE_MESSAGE);
 		}
-		try {
-			switch (status) {
-			case NEW:
-				parseInitCommand(command);
-				break;
-			case INITIALISED:
-				parseRobotDeploymentCommand(command);
-				break;
-			case ROBOT_DEPLOYED:
-				parseRobotInstructionCommand(command);
-				String result = robot.getPosition();
-				history.add(result);
+		switch (status) {
+		case NEW:
+			parseInitCommand(command);
+			break;
+		case INITIALISED:
+			parseRobotDeploymentCommand(command);
+			break;
+		case ROBOT_DEPLOYED:
+			parseRobotInstructionCommand(command);
+			String result = robot.getPosition();
 
-				dropRobot();
-				return result;
-			}
-		} catch (RoverException rex) {
-			// Adding exception to history then throwing
-			history.add(rex.getMessage());
-			throw rex;
+			dropRobot();
+			return result;
 		}
 
 		return null;
@@ -66,11 +51,7 @@ public class DefaultConsole implements Console {
 
 	private void dropRobot() {
 		robot = null;
-		status = ConsoleStatus.NEW;
-	}
-
-	public List<String> getHistory() {
-		return history;
+		status = ConsoleStatus.INITIALISED;
 	}
 
 	private void parseRobotInstructionCommand(String command)
@@ -151,4 +132,5 @@ public class DefaultConsole implements Console {
 
 		ROBOT_DEPLOYED
 	}
+
 }

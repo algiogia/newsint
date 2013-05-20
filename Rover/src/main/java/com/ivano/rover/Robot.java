@@ -91,9 +91,9 @@ public class Robot {
 				yCoord++;
 			}
 			break;
-		case WEST:
+		case EAST:
 
-			if (xCoord + 1 > plateau.getySize()) {
+			if (xCoord + 1 > plateau.getxSize()) {
 				invalidMove = true;
 			} else {
 				xCoord++;
@@ -107,13 +107,14 @@ public class Robot {
 				yCoord--;
 			}
 			break;
-		case EAST:
+		case WEST:
 
 			if (xCoord - 1 < 0) {
 				invalidMove = true;
 			} else {
 				xCoord--;
 			}
+			break;
 		}
 
 		if (invalidMove) {
